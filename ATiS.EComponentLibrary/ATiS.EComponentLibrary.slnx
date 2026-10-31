@@ -1,3 +1,7 @@
 <Solution>
+  <Project Path="Controller/Controller.csproj" Id="db27ec61-09e4-4cd1-9ea4-c3090026f9df" />
+  <Project Path="Interface/Interface.csproj" Id="86259656-c368-492c-9341-6e6faa1d060e" />
+  <Project Path="Model/Model.csproj" Id="bfeb4e07-997f-4262-9917-0ccefb0c4453" />
+  <Project Path="Service/Service.csproj" Id="fee284bc-f4dc-4466-bbd5-5b52f6ae6504" />
   <Project Path="WebApi/WebApi.csproj" Id="5bfacca8-40d3-41d7-9d68-5f74981a070a" />
 </Solution>
