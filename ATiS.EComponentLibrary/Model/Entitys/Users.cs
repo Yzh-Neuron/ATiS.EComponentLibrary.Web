@@ -1,17 +1,12 @@
 ﻿using Model.Common;
 using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model.Entitys
 {
     /// <summary>
     /// 用户
     /// </summary>
-    public class Users: IEntity
+    public class Users : IEntity
     {
         /// <summary>
         /// 用户名
@@ -43,5 +38,5 @@ namespace Model.Entitys
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public string Image { get; set; }
-    }   
+    }
 }

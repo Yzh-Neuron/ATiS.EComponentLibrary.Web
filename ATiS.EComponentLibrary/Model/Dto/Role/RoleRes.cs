@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model.Entitys;
-using SqlSugar;
-
-namespace Model.Dto.Role
+﻿namespace Model.Dto.Role
 {
     public class RoleRes
     {
@@ -22,7 +14,7 @@ namespace Model.Dto.Role
         /// <summary>
         /// 是否启用（0=未启用，1=启用）
         /// </summary> 
-        public bool IsEnable { get; set; } 
+        public bool IsEnable { get; set; }
         /// <summary>
         /// 描述
         /// </summary> 

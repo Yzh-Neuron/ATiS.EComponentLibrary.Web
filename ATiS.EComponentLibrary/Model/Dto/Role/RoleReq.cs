@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Model.Dto.Role
 {
     public class RoleReq
     {
-        public string Name { get; set; } 
+        public string Name { get; set; }
         [DefaultValue("Hello")]
         public string Description { get; set; }
         public int PageIndex { get; set; }
