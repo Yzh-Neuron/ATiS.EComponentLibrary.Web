@@ -5,7 +5,7 @@ using SqlSugar;
 
 namespace WebApi.Controllers
 {
-
+    [ApiController]
     [Route("api/[controller]/[action]")]
     public class ToolController : Controller
     {
@@ -168,7 +168,7 @@ namespace WebApi.Controllers
                 CreateDate = DateTime.Now,
                 CreateUserId = userId
             };
-        
+
             return await _sqlSugarClient.Insertable(m33).ExecuteCommandIdentityIntoEntityAsync();
         }
     }
