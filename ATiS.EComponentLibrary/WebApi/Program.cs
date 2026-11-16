@@ -1,8 +1,10 @@
+using System.Diagnostics;
 using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Model.Other;
 using Newtonsoft.Json.Serialization;
 using SqlSugar;
@@ -13,7 +15,40 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo {Title="Dashu.Admin.Api" ,Version="v2"});
+
+    //1、添加调试用的权限Token
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "请输入token,格式为 Bearer xxxxxxxx (注意中间必须有空格)",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey, // 也可以用 Http 方案，详见下文
+        Scheme = "Bearer"
+    });
+    //全局应用方案
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer" // 必须和上面的 AddSecurityDefinition 第一个参数完全一致
+                }
+            },
+           Array.Empty<string>()
+        }
+    });
+
+
+    //2、设置对象参数的默认值
+    options.SchemaFilter<DefaultValueSchemaFilter>();
+
+});
 
 //替换内置IOC
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -76,6 +111,22 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 });
 
 var app = builder.Build();
+
+app.Use(async (context, next) =>
+{
+    // 1. 请求进入时，读取请求头
+    var authHeader = context.Request.Headers["Authorization"].ToString();
+    Debug.WriteLine($"[HTTP请求] 路径: {context.Request.Path}, 认证头: {authHeader}");
+
+
+    // 2. 执行下一个中间件（进入你的 Controller）
+    await next();
+
+    // 3. 请求返回时（Controller 执行完毕），可以查看响应状态码
+    Debug.WriteLine($"[HTTP响应] 状态码: {context.Response.StatusCode}");
+});
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
