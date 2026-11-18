@@ -18,7 +18,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo {Title="Dashu.Admin.Api" ,Version="v2"});
-
     //1、添加调试用的权限Token
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -43,8 +42,6 @@ builder.Services.AddSwaggerGen(options =>
            Array.Empty<string>()
         }
     });
-
-
     //2、设置对象参数的默认值
     options.SchemaFilter<DefaultValueSchemaFilter>();
 
@@ -111,22 +108,6 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 });
 
 var app = builder.Build();
-
-app.Use(async (context, next) =>
-{
-    // 1. 请求进入时，读取请求头
-    var authHeader = context.Request.Headers["Authorization"].ToString();
-    Debug.WriteLine($"[HTTP请求] 路径: {context.Request.Path}, 认证头: {authHeader}");
-
-
-    // 2. 执行下一个中间件（进入你的 Controller）
-    await next();
-
-    // 3. 请求返回时（Controller 执行完毕），可以查看响应状态码
-    Debug.WriteLine($"[HTTP响应] 状态码: {context.Response.StatusCode}");
-});
-
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

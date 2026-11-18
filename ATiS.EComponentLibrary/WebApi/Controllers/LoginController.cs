@@ -1,4 +1,5 @@
-﻿using Interface;
+﻿using System.ComponentModel;
+using Interface;
 using Microsoft.AspNetCore.Mvc;
 using Model.Dto.Login;
 using Model.Dto.User;
@@ -22,7 +23,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiResult> GetToken([FromBody] LoginReq req)
+        public async Task<ApiResult> GetToken([FromBody]  LoginReq req)
         {
             //模型验证
             if (ModelState.IsValid)
